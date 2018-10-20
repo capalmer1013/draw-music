@@ -11,7 +11,7 @@
   </head>
   <body>
   <input type="color" id="colorPicker" name="color"/>
-  <input type="range" id=brushSize min="1" max="100">
+  <input type="range" id=brushSize min="1" max="500">
   <input type="range" id=opacity min="0" max="100">
     <div id="canvasDiv"></div>
   </body>
@@ -31,14 +31,19 @@
   var paint;
   var synth = new Tone.Synth().toMaster()
   var Notes = ["C", "D", "E", "F", "G", "A", "B"]
-  var Octaves = ["0", "1", "2", "3", "4", "5", "6", "7", "8"]
+  var Octaves = ["0", "1", "2", "3", "4", "5", "6", "7"]
   var notesAndOctaves = []
   for(var i = 0; i < Octaves.length; i++){
     for(var j = 0; j < Notes.length; j++){
       notesAndOctaves.push(Notes[j]+Octaves[i]);
     }
   }
-  var loop = []
+  // var seq = new Tone.Sequence(function(time, note){
+  //   console.log(note);
+  //   synth.triggerAttackRelease(note, "8n");
+  // },[], "8n");
+  // seq.start()
+  // Tone.Transport.start()
   var lastY = 0;
   canvas = document.createElement('canvas');
   context = canvas.getContext("2d");
@@ -60,13 +65,18 @@
     addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop);
     redraw();
     var i = Math.floor(Math.abs(mouseY-window.innerHeight)/(window.innerHeight / notesAndOctaves.length))
-    synth.triggerAttack(notesAndOctaves[i]);
+    //seq.add(1, notesAndOctaves[i]);
+    synth.triggerAttack(notesAndOctaves[i])
   });
 
   $('#canvas').mousemove(function(e){
+    var mouseX = e.pageX - this.offsetLeft;
+    var mouseY = e.pageY - this.offsetTop;
     if(paint){
       addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
       redraw();
+      var i = Math.floor(Math.abs(mouseY-window.innerHeight)/(window.innerHeight / notesAndOctaves.length))
+      synth.setNote(notesAndOctaves[i])
     }
   });
 
