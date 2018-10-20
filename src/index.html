@@ -11,6 +11,7 @@
   <body>
   <input type="color" id="colorPicker" name="color"/>
   <input type="range" id=brushSize min="1" max="100">
+  <input type="range" id=opacity min="0" max="100">
     <div id="canvasDiv"></div>
   </body>
 </html>
@@ -19,8 +20,14 @@
   var canvasDiv = document.getElementById('canvasDiv');
   var color = document.getElementById("colorPicker");
   var radius = document.getElementById("brushSize");
+  var opacity = document.getElementById("opacity");
   var clickColor = new Array();
   var clickSize = new Array();
+  var opacityArray = new Array();
+  var clickX = new Array();
+  var clickY = new Array();
+  var clickDrag = new Array();
+  var paint;
 
   canvas = document.createElement('canvas');
   canvas.setAttribute('width', window.innerWidth);
@@ -55,11 +62,6 @@
     //paint = false;
   });
 
-  var clickX = new Array();
-  var clickY = new Array();
-  var clickDrag = new Array();
-  var paint;
-
   function addClick(x, y, dragging)
   {
     clickX.push(x);
@@ -67,6 +69,7 @@
     clickDrag.push(dragging);
     clickColor.push(color.value);
     clickSize.push(radius.value);
+    opacityArray.push(opacity.value);
   }
 
   function redraw(){
@@ -87,6 +90,7 @@
       context.closePath();
       context.strokeStyle = clickColor[i];
       context.lineWidth = clickSize[i];
+      context.globalAlpha = opacityArray[i]/100;
       context.stroke();
     }
   }
