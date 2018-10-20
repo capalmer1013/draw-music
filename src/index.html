@@ -29,7 +29,7 @@
   var clickY = new Array();
   var clickDrag = new Array();
   var paint;
-  var synth = new Tone.Synth().toMaster()
+  var synth = new Tone.MonoSynth().toMaster();
   var Notes = ["C", "D", "E", "F", "G", "A", "B"]
   var Octaves = ["0", "1", "2", "3", "4", "5", "6", "7"]
   var notesAndOctaves = []
@@ -66,6 +66,7 @@
     redraw();
     var i = Math.floor(Math.abs(mouseY-window.innerHeight)/(window.innerHeight / notesAndOctaves.length))
     //seq.add(1, notesAndOctaves[i]);
+    synth.oscillator.partials = parseRGB(color.value)
     synth.triggerAttack(notesAndOctaves[i])
   });
 
@@ -120,5 +121,15 @@
       context.globalAlpha = opacityArray[i]/100;
       context.stroke();
     }
+  }
+
+  function parseRGB(rgbString){
+    var result = []
+    for(var i = 0; i < rgbString.length; i ++){
+      if(rgbString[i] != "#"){
+        result.push(parseInt(rgbString[i], 16)/16)
+      }
+    }
+    return result
   }
 </script>
