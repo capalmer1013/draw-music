@@ -82,8 +82,10 @@
     if(paint){
       addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
       redraw();
-      var i = Math.floor(Math.abs(mouseY-window.innerHeight)/(window.innerHeight / notesAndOctaves.length))
-      synth.setNote(notesAndOctaves[i])
+      // var i = Math.floor((Math.abs(mouseY-window.innerHeight)/(window.innerHeight / notesAndOctaves.length)))
+      var i = Math.floor((Math.abs(mouseY-window.innerHeight)/(window.innerHeight / 7)))
+      var mod = Math.floor((Math.abs(radius.value-radius.max)/radius.max)*7)
+      synth.setNote(notesAndOctaves[mod*7+(i%7)])
     }
   });
 
